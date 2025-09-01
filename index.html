@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divine - Debut Celebration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #d4a574 0%, #b8860b 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(212, 165, 116, 0.7), rgba(184, 134, 11, 0.8));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 0.1em;
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-style: italic;
+            color: #f4e4bc;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-arrow {
+            width: 30px;
+            height: 30px;
+            border-right: 3px solid white;
+            border-bottom: 3px solid white;
+            transform: rotate(45deg);
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: #b8860b;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(184, 134, 11, 0.2);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .gallery-item.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(184, 134, 11, 0.3);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(212, 165, 116, 0.9), rgba(184, 134, 11, 0.9));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .overlay-content {
+            text-align: center;
+            color: white;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover .overlay-content {
+            transform: translateY(0);
+        }
+
+        .overlay-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* Special layouts for featured images */
+        .gallery-item:first-child {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .gallery-item:nth-child(4),
+        .gallery-item:nth-child(10) {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #d4a574 0%, #b8860b 100%);
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .footer h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .footer p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-5px) translateX(-50%);
+            }
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 0 10px;
+            }
+
+            .gallery-item {
+                aspect-ratio: 3/4;
+            }
+
+            .gallery-section {
+                padding: 60px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="hero-content">
+                <h1>DIVINE</h1>
+                <p style="font-size: 2rem; color: #f4e4bc; margin-bottom: 0.5rem;">Grace</p>
+                <p>A Celebration of Elegance & Grace</p>
+            </div>
+            <div class="scroll-indicator">
+                <div class="scroll-arrow"></div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="gallery-section" id="gallery">
+            <h2 class="section-title">Moments of Beauty</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="1.jpg" alt="Elegant Portrait 1">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <h3>Golden Hour</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="2.jpg" alt="Elegant Portrait 2">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <h3>Artistic Vision</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="3.jpg" alt="Elegant Portrait 3">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <h3>Pure Elegance</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="4.jpg" alt="Elegant Portrait 4">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <h3>Timeless Beauty</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="5.jpg" alt="Elegant Portrait 5">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <h3>Graceful Moment</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="6.jpg" alt="Elegant Portrait 6">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <h3>Sophisticated</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="7.jpg" alt="Elegant Portrait 7">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <h3>Divine Grace</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="8.jpg" alt="Elegant Portrait 8">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <h3>Radiant</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="9.jpg" alt="Elegant Portrait 9">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <h3>Stunning</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="10.jpg" alt="Elegant Portrait 10">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <h3>Magnificent</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="11.jpg" alt="Elegant Portrait 11">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <h3>Unforgettable</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <section class="footer">
+            <h3>A Night to Remember</h3>
+            <p>"Beauty begins the moment you decide to be yourself"</p>
+        </section>
+    </div>
+
+    <script>
+        // Smooth animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('animate');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        // Observe gallery items
+        document.addEventListener('DOMContentLoaded', () => {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => observer.observe(item));
+        });
+
+        // Smooth scroll for scroll indicator
+        document.querySelector('.scroll-indicator').addEventListener('click', () => {
+            document.querySelector('#gallery').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Add parallax effect to hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            const rate = scrolled * -0.5;
+            hero.style.transform = `translateY(${rate}px)`;
+        });
+    </script>
+</body>
+</html>
